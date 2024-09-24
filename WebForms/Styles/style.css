@@ -1,0 +1,45 @@
+﻿.navbar {
+    padding: 2rem;
+    background-color: #E5E8EB;
+}
+
+.navbar-collapse {
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Estilos Generales */
+.footer {
+    background-color: #1E5DA8;
+    padding: 1rem;
+}
+
+.formcontent{
+    padding: 2rem;
+}
+
+.btn {
+    background-color: #1E5DA8;
+    color: white;
+    width: 50%;
+
+}
+.div center {
+    display: flex;
+    justify-content: center
+}
+
+section {
+    padding: 2rem;
+}
+
+h1{
+    font-size: 2.5rem ;
+}
+
+/*Adaptable (Responsivo)*/
+@media screen and (max-width: 767px) {
+    .navbar-brand {
+
+    }
+}
