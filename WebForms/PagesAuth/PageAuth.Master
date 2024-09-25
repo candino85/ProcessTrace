@@ -24,6 +24,7 @@
 
 </head>
 <body>
+
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Bienvenido @usuario</a>
@@ -42,7 +43,7 @@
                             <a class="nav-link active" aria-current="page" href="/PagesAuth/Usuarios.aspx">Usuarios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Bitácora</a>
+                            <a class="nav-link active" aria-current="page" href="/PagesAuth/Bitacora.aspx">Bitácora</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Menu item</a>
@@ -67,6 +68,17 @@
 
     <asp:ContentPlaceHolder ID="body" runat="server">
     </asp:ContentPlaceHolder>
+
+        <footer class="footer text-white fixed-bottom  bg-secondary">
+        <div class="container-fluid ">
+            <div class="row">
+                <div class="col text-end">
+                    <p class="mb-0">Usuario: @usuario</p>
+                    <p class="mb-0">Empresa: @empresa</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>

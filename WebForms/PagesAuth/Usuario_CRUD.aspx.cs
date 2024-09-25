@@ -13,6 +13,7 @@ namespace WebForms.PagesAuth
         private static int id = 0;
         Usuario_CN usuarioCN = new Usuario_CN();
         //TODO: Agregar permisos de usuario
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -20,7 +21,7 @@ namespace WebForms.PagesAuth
                 if (Request.QueryString["Id"] != null)
                 {
                     id = int.Parse(Request.QueryString["Id"]);
-                    if(id != 0)
+                    if(id != 0) // Editar usuario
                     {
                         lblTitulo.Text = "Editar Usuario";
                         btnGuardar.Text = "Actualizar";
@@ -34,7 +35,7 @@ namespace WebForms.PagesAuth
                         //CargarPermisos(usuario.Permiso.IdPermiso.ToString()); Agregar permisos de usuario
 
                     }
-                    else
+                    else //Crear usuario
                     {
                         lblTitulo.Text = "Crear Usuario";
                         btnGuardar.Text = "Guardar";
