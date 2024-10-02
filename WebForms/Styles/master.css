@@ -1,2 +1,27 @@
-﻿body {
+﻿html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#appPage {
+    margin-top: 70px;
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.navbar {
+    padding: 1rem;
+    background-color: #E5E8EB;
+}
+
+.form{
+    background-color: lightgray
+}
+
+.footer {
+    background-color: #1E5DA8;
+    padding: 1rem;
 }

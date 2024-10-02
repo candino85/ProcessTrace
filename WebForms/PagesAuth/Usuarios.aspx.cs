@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Entidades;
 using Negocio;
+using Servicios;
 
 
 namespace WebForms.PagesAuth
@@ -13,9 +14,10 @@ namespace WebForms.PagesAuth
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack) { 
             MostrarUsuarios();
+            }
         }
-
         private void MostrarUsuarios()
         {
             List<Usuario_CE> usuarios = usuarioCN.Listar();
@@ -23,26 +25,10 @@ namespace WebForms.PagesAuth
             GVUsuarios.DataSource = usuarios;
             GVUsuarios.DataBind();
         }
-
         protected void Crear_Click(object sender, EventArgs e)
         {
-            Response.Redirect($"/PagesAuth/Usuario_CRUD.aspx?Id=0");
-            //Usuario_CE usuario = new Usuario_CE
-            //{
-            //    Nombre = txtNombre.Text,
-            //    Apellido = txtApellido.Text,
-            //    Email = txtEmail.Text,
-            //    Activo = chkActivo.Checked,
-            //    IntentosAcceso = int.Parse(txtIntentosAcceso.Text),
-            //    Bloqueado = chkBloqueado.Checked,
-            //    UltimoAcceso = DateTime.Parse(txtUltimoAcceso.Text),
-            //    FechaCreacion = DateTime.Parse(txtFechaCreacion.Text)
-            //};
-
-            //usuarioCN.Crear(usuario);
-            //GetUsuarios();
+            Response.Redirect("Usuario_CRUD.aspx?Id=0");
         }
-
         protected void Editar_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)sender;
@@ -50,7 +36,6 @@ namespace WebForms.PagesAuth
 
             Response.Redirect($"/PagesAuth/Usuario_CRUD.aspx?Id={Id}");
         }
-
         protected void Eliminar_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)sender;
@@ -65,60 +50,19 @@ namespace WebForms.PagesAuth
 
             //Response.Redirect($"/PagesAuth/Usuario_CRUD.aspx?Id={Id}");
         }
+        protected async void Reset_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            string Id = btn.CommandArgument;
 
+            var usuario = usuarioCN.Obtener(int.Parse(Id));
 
-        //private void GetUsuarios()
-        //{
-        //    usuario = new Negocio.Usuario();
-        //    var usuarios = usuario.GetUsuarios();
-
-        //    foreach (Usuario_CE u in usuarios)
-        //    {
-        //        TableRow row = new TableRow();
-
-        //        TableCell Id = new TableCell { Text = u.Id.ToString() };
-        //        TableCell Nombre = new TableCell { Text = u.Nombre };
-        //        TableCell Apellido = new TableCell { Text = u.Apellido };
-        //        TableCell Email = new TableCell { Text = u.Email };
-        //        TableCell Activo = new TableCell { Text = u.Activo.ToString() };
-        //        TableCell IntentosAcceso = new TableCell { Text = u.IntentosAcceso.ToString() };
-        //        TableCell Bloqueado = new TableCell { Text = u.Bloqueado.ToString() };
-        //        TableCell UltimoAcceso = new TableCell { Text = u.UltimoAcceso.ToString() };
-        //        TableCell FechaCreacion = new TableCell { Text = u.FechaCreacion.ToString() };
-
-        //        // Create Edit button
-        //        Button btnEdit = new Button
-        //        {
-        //            Text = "Editar",
-        //            OnClientClick = $"openEditModal({u.Id}); return false;"
-        //        };
-
-        //        // Create Delete button
-        //        Button btnDelete = new Button
-        //        {
-        //            Text = "Delete",
-        //            OnClientClick = $"openDeleteModal({u.Id}); return false;"
-
-        //        };
-
-        //        TableCell cellActions = new TableCell();
-        //        cellActions.Controls.Add(btnEdit);
-        //        cellActions.Controls.Add(new Literal { Text = " " }); // Add space between buttons
-        //        cellActions.Controls.Add(btnDelete);
-
-        //        row.Cells.Add(Id);
-        //        row.Cells.Add(Nombre);
-        //        row.Cells.Add(Apellido);
-        //        row.Cells.Add(Email);
-        //        row.Cells.Add(Activo);
-        //        row.Cells.Add(IntentosAcceso);
-        //        row.Cells.Add(Bloqueado);
-        //        row.Cells.Add(UltimoAcceso);
-        //        row.Cells.Add(FechaCreacion);
-        //        row.Cells.Add(cellActions);
-
-        //        tableContent.Rows.Add(row);
-        //    }           
-        //}
+            //Agregar confirm js antes de correr esto
+            if (await usuarioCN.ResetClave(usuario))
+            {
+                Response.Write("<script Language='JavaScript'> parent.alert(La clave del usuario '" + usuario.Email + "' se ha reseteado correctamente y ha sido notificado a su correo.);</script>");
+            }
+            //Response.Redirect($"/PagesAuth/Usuario_CRUD.aspx?Id={Id}");
+        }
     }
 }

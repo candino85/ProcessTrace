@@ -11,7 +11,7 @@ namespace WebForms.PagesAuth
 {
 
 
-    public partial class Usuario_CRUD
+    public partial class CambiarClave
     {
 
         /// <summary>
@@ -24,85 +24,85 @@ namespace WebForms.PagesAuth
         protected global::System.Web.UI.WebControls.Label lblTitulo;
 
         /// <summary>
-        /// txtNombre control.
+        /// txtClaveActual control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNombre;
+        protected global::System.Web.UI.WebControls.TextBox txtClaveActual;
 
         /// <summary>
-        /// rfvNombre control.
+        /// rfvClaveActual control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombre;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvClaveActual;
 
         /// <summary>
-        /// txtApellido control.
+        /// txtClaveNueva control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtApellido;
+        protected global::System.Web.UI.WebControls.TextBox txtClaveNueva;
 
         /// <summary>
-        /// rfvApellido control.
+        /// rfvClaveNueva control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvApellido;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvClaveNueva;
 
         /// <summary>
-        /// ddlPerfil control.
+        /// revClaveNueva control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPerfil;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revClaveNueva;
 
         /// <summary>
-        /// txtEmail control.
+        /// txtClaveNueva2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtClaveNueva2;
 
         /// <summary>
-        /// rfvEmail control.
+        /// rfvClaveNueva2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvClaveNueva2;
 
         /// <summary>
-        /// chkActivo control.
+        /// cvClaveNueva control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkActivo;
+        protected global::System.Web.UI.WebControls.CompareValidator cvClaveNueva;
 
         /// <summary>
-        /// chkBloqueado control.
+        /// lblMensaje control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkBloqueado;
+        protected global::System.Web.UI.WebControls.Label lblMensaje;
 
         /// <summary>
         /// btnGuardar control.

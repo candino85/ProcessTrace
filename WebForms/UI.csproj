@@ -84,6 +84,9 @@
     <Content Include="Index.html" />
     <Content Include="Js\script.js" />
     <Content Include="PagesAuth\Bitacora.aspx" />
+    <Content Include="PagesAuth\CambiarClave.aspx" />
+    <Content Include="PagesAuth\Home.aspx" />
+    <Content Include="PagesAuth\Logout.aspx" />
     <Content Include="PagesAuth\Usuarios.aspx" />
     <Content Include="PagesAuth\Usuario_CRUD.aspx" />
     <Content Include="Pages\Contacto.aspx" />
@@ -105,6 +108,27 @@
     </Compile>
     <Compile Include="PagesAuth\Bitacora.aspx.designer.cs">
       <DependentUpon>Bitacora.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PagesAuth\CambiarClave.aspx.cs">
+      <DependentUpon>CambiarClave.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PagesAuth\CambiarClave.aspx.designer.cs">
+      <DependentUpon>CambiarClave.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PagesAuth\Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PagesAuth\Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PagesAuth\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PagesAuth\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="PagesAuth\Usuarios.aspx.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>

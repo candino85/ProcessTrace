@@ -12,5 +12,11 @@ namespace WebForms
         protected void Application_Start(object sender, EventArgs e)
         {
         }
+
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            //var autchCookies = hTt;
+        }
     }
 }

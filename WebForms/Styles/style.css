@@ -37,6 +37,28 @@ h1{
     font-size: 2.5rem ;
 }
 
+.form {
+    background-color: lightgray
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#form {
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+}
+
+footer
+{
+    background-color: #1E5DA8;
+    padding: 1rem;
+}
 /*Adaptable (Responsivo)*/
 @media screen and (max-width: 767px) {
     .navbar-brand {

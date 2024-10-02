@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Composite\Component.cs" />
+    <Compile Include="Composite\Permission.cs" />
+    <Compile Include="Composite\PermissionType.cs" />
+    <Compile Include="Composite\Role.cs" />
+    <Compile Include="Composite\UserPermission.cs" />
     <Compile Include="Evento_CE.cs" />
     <Compile Include="Usuario_CE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using Servicios.Composite;
 
 namespace WebForms.PagesAuth
 {    
@@ -21,6 +22,7 @@ namespace WebForms.PagesAuth
                 if (Request.QueryString["Id"] != null)
                 {
                     id = int.Parse(Request.QueryString["Id"]);
+
                     if(id != 0) // Editar usuario
                     {
                         lblTitulo.Text = "Editar Usuario";
@@ -32,6 +34,7 @@ namespace WebForms.PagesAuth
                         txtEmail.Text = usuario.Email;
                         chkActivo.Checked = usuario.Activo;
                         chkBloqueado.Checked = usuario.Bloqueado;
+                        ddlPerfil.SelectedIndex = usuario.Perfil.Id;
                         //CargarPermisos(usuario.Permiso.IdPermiso.ToString()); Agregar permisos de usuario
 
                     }
@@ -43,11 +46,12 @@ namespace WebForms.PagesAuth
                     }
                 }
                 else
-                    Response.Redirect("/PagesAuth/Usuarios.aspx");
+                    Response.Redirect("PagesAuth/Usuarios.aspx");
             }
         }
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
+        // Inside the btnGuardar_Click method
+        protected async void btnGuardar_Click(object sender, EventArgs e)
         {
             Usuario_CE usuario = new Usuario_CE
             {
@@ -57,35 +61,28 @@ namespace WebForms.PagesAuth
                 Email = txtEmail.Text,
                 Activo = chkActivo.Checked,
                 Bloqueado = chkBloqueado.Checked,
-                //Permiso = new Permiso_CE { IdPermiso = int.Parse(ddlPermisos.SelectedValue) } Agregar permisos de usuario
+                Perfil = new Role { Id = int.Parse(ddlPerfil.SelectedValue) }
             };
 
             bool respuesta;
 
-            if (id != 0)
-                respuesta = usuarioCN.Editar(usuario);
-            else
-                respuesta = usuarioCN.Crear(usuario);
+            try
+            {
+                if (id != 0)
+                    respuesta = usuarioCN.Editar(usuario);
+                else
+                    respuesta = await usuarioCN.Crear(usuario);
 
-            if (respuesta)
-                Response.Redirect("/PagesAuth/Usuarios.aspx");
-            else
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "alert('Error al realizar la operación');", true);
+                if (respuesta)
+                    Response.Redirect("/PagesAuth/Usuarios.aspx");
+                else
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "alert('Error al realizar la operación');", true);
+            }
+            catch (Exception ex)
+            {
+                //Response.Write($"<script>window.alert('{ex.ToString()}');</script>");
+                //Response.Write($"<script Language='JavaScript'> parent.alert('{ex.ToString()}');</script>");
+            }
         }
-
-        //Agregar permisos de usuario
-        //private void CargarPermisos(string IdPermiso = "")
-        //{
-        //    List<Permiso_CE> permisos = permisoCN.Listar();
-
-        //    ddlPermisos.DataTextField = "Descripcion";
-        //    ddlPermisos.DataValueField = "Id";
-
-        //    ddlPermisos.DataSource = permisos;
-        //    ddlPermisos.DataBind();
-
-        //    if(IdPermiso != "")
-        //        ddlPermisos.SelectedValue = IdPermiso;
-        //}
     }
 }

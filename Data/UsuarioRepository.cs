@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Servicios.Composite;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -39,7 +40,9 @@ namespace Datos
                                     IntentosAcceso = Convert.ToInt32(dr["IntentosAcceso"]),
                                     Bloqueado = Convert.ToBoolean(dr["Bloqueado"]),
                                     UltimoAcceso = dr["UltimoAcceso"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UltimoAcceso"]),
-                                    FechaCreacion = Convert.ToDateTime(dr["FechaCreacion"])
+                                    //UltimoAcceso = dr.IsDBNull(dr.GetOrdinal("UltimoAcceso"))  ? DateTime.MinValue : Convert.ToDateTime(dr["UltimoAcceso"]),
+                                    FechaCreacion = Convert.ToDateTime(dr["FechaCreacion"]),
+                                    Perfil = new Role { Id = Convert.ToInt32(dr["Perfil"])}
                                 };
 
                                 usuarios.Add(oUsuario);
@@ -81,6 +84,7 @@ namespace Datos
                                 usuario.Bloqueado = Convert.ToBoolean(dr["Bloqueado"]);
                                 usuario.UltimoAcceso = dr["UltimoAcceso"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UltimoAcceso"]);
                                 usuario.FechaCreacion = dr["FechaCreacion"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["FechaCreacion"]);
+                                usuario.Perfil = new Role { Id = Convert.ToInt32(dr["IdPerfil"]) };
                             }
                         }
                         return usuario;
@@ -92,6 +96,46 @@ namespace Datos
                 }
             }                                            
         }
+        public Usuario_CE Obtener(string email)
+        {
+            Usuario_CE usuario = new Usuario_CE();
+
+            using (SqlConnection oConexion = new SqlConnection(Conexion))
+            {
+                oConexion.Open();
+                using (SqlCommand cmd = oConexion.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "Usuario_GetByEmail";
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    try
+                    {
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                usuario.Id = Convert.ToInt32(dr["Id"]);
+                                usuario.Nombre = dr["Nombre"].ToString();
+                                usuario.Apellido = dr["Apellido"].ToString();
+                                usuario.Email = dr["Email"].ToString();
+                                usuario.Clave = dr["Clave"].ToString();
+                                usuario.Activo = Convert.ToBoolean(dr["Activo"]);
+                                usuario.IntentosAcceso = Convert.ToInt32(dr["IntentosAcceso"]);
+                                usuario.Bloqueado = Convert.ToBoolean(dr["Bloqueado"]);
+                                usuario.UltimoAcceso = dr["UltimoAcceso"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UltimoAcceso"]);
+                                usuario.FechaCreacion = dr["FechaCreacion"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["FechaCreacion"]);
+                                usuario.Perfil = new Role { Id = Convert.ToInt32(dr["IdPerfil"]), Name = dr["NombrePerfil"].ToString()};
+                            }
+                        }
+                        return usuario;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error al obtener el usuario", ex);
+                    }
+                }
+            }
+        }
         public bool Crear(Usuario_CE usuario)
         {
             bool respuesta = false;
@@ -99,10 +143,16 @@ namespace Datos
             using (SqlConnection oConexion = new SqlConnection(Conexion))
             {
                 SqlCommand cmd = new SqlCommand("Usuario_Create", oConexion);
+                cmd.CommandType = CommandType.StoredProcedure;
+             
                 cmd.Parameters.AddWithValue("@Nombre", usuario.Nombre);
                 cmd.Parameters.AddWithValue("@Apellido", usuario.Apellido);
-                cmd.Parameters.AddWithValue("@Email", usuario.Apellido);
-                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Email", usuario.Email);
+                cmd.Parameters.AddWithValue("@Clave", usuario.Clave);
+                cmd.Parameters.AddWithValue("@Activo", usuario.Activo);
+                cmd.Parameters.AddWithValue("@Bloqueado", usuario.Bloqueado);                
+                cmd.Parameters.AddWithValue("@Perfil", usuario.Perfil.Id);
+                
                 try
                 {
                     oConexion.Open();
@@ -134,7 +184,7 @@ namespace Datos
                     cmd.Parameters.AddWithValue("@Email", usuario.Email);
                     cmd.Parameters.AddWithValue("@Activo", usuario.Activo);
                     cmd.Parameters.AddWithValue("@Bloqueado", usuario.Bloqueado);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Perfil", usuario.Perfil.Id); // Revisar si es necesario enviar el objeto completo o solo el id
 
                     try
                     {
@@ -170,6 +220,94 @@ namespace Datos
                 catch (Exception ex)
                 {
                     throw new Exception("Error al eliminar el usuario", ex);
+                }
+            }
+        }
+        public bool LoginFallido(Usuario_CE usuario)
+        {
+            bool respuesta = false;
+
+            using (SqlConnection oConexion = new SqlConnection(Conexion))
+            {
+                oConexion.Open();
+                using (SqlCommand cmd = oConexion.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "Usuario_LoginFallido";
+                    cmd.Parameters.AddWithValue("@Id", usuario.Id);
+                    cmd.Parameters.AddWithValue("@IntentosAcceso", usuario.IntentosAcceso);
+
+
+                    try
+                    {
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+                        if (filasAfectadas > 0)
+                            respuesta = true;
+                        return respuesta;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error al registrar login fallido del usuario", ex);
+                    }
+                }
+            }
+        }
+        public bool CambiarClave(Usuario_CE usuario)
+        {
+            bool respuesta = false;
+
+            using (SqlConnection oConexion = new SqlConnection(Conexion))
+            {
+                oConexion.Open();
+                using (SqlCommand cmd = oConexion.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "Usuario_UpdatePassword";
+                    cmd.Parameters.AddWithValue("@Id", usuario.Id);
+                    cmd.Parameters.AddWithValue("@Clave", usuario.Clave);
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+                        if (filasAfectadas > 0)
+                            respuesta = true;
+                        return respuesta;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error al cambiar la clave del usuario", ex);
+                    }
+                }
+            }
+        }
+        public bool LoginExitoso(Usuario_CE usuario)
+        {
+            bool respuesta = false;
+
+            using (SqlConnection oConexion = new SqlConnection(Conexion))
+            {
+                oConexion.Open();
+                using (SqlCommand cmd = oConexion.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "Usuario_LoginExitoso";
+                    cmd.Parameters.AddWithValue("@Id", usuario.Id);
+                    cmd.Parameters.AddWithValue("@UltimoAcceso", usuario.UltimoAcceso);
+                    cmd.Parameters.AddWithValue("@IntentosAcceso", usuario.IntentosAcceso);
+
+                    try
+                    {
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+                        if (filasAfectadas > 0)
+                            respuesta = true;
+                        return respuesta;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error al editar el usuario", ex);
+                    }
                 }
             }
         }

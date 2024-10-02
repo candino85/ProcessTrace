@@ -1,4 +1,5 @@
 ﻿using Abstracciones;
+using Servicios.Composite;
 using System;
 
 namespace Entidades
@@ -13,8 +14,9 @@ namespace Entidades
         public bool Activo { get; set; }        
         public int IntentosAcceso { get; set; }
         public bool Bloqueado { get; set; }
-        public DateTime UltimoAcceso { get; set; }
+        public DateTime? UltimoAcceso { get; set; }
         public DateTime FechaCreacion { get; set; }
+        public  Role Perfil { get; set; }
         public string DVH { get; set; }        
     }
 }
